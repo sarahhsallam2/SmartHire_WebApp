@@ -304,7 +304,13 @@ function showNextStep() {
     <div class="step">
       <div class="step-number">2</div>
       <div class="step-description">Import CVs</div>
-      <button type="button" onclick="importCVs()">Import</button>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <br>
+        <label for="file">Select a file:</label>
+        <input type="file" name="file" id="file" style="display: none;" />
+        <button type="button" onclick="document.getElementById('file').click()">Choose File</button>
+        <input type="submit" value="Import" />
+    </form>
     </div>
     <div class="step">
       <div class="step-number">3</div>
