@@ -251,34 +251,34 @@ function showNextStep() {
 
          
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav  ">
+            <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('about') }}"> About</a>
+                <a class="nav-link" href="{{ url_for('index') }}" style="margin-right: 10px;">Home<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('service') }}">Services</a>
+                <a class="nav-link" href="{{ url_for('about') }}" style="margin-right: 10px;">About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
+                <a class="nav-link" href="{{ url_for('service') }}" style="margin-right: 10px;">Services</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('features') }}">Features</a>
-              </li>
-              <li class="nav-item" >
-                <a class="nav-link" href="{{ url_for('product') }}">About Product</span></a>
-              </li>
-              <li class="nav-item" >
-                <a class="nav-link" href="{{ url_for('dashboard') }}">DashBoard <span class="sr-only">(current)</span></a>
-              </li>
-            </ul>
-            <a href="{{ url_for('Login') }}"class="quote_btn" style="margin-right: 10px; display: inline-block; padding: 10px 20px; background-color: #0074D9; color: #fff; text-decoration: none; border-radius: 5px; text-align: center; cursor: pointer;">Login</a>
-            <button onclick="startFreeTrial()">Free Trial</button>
-
-            
-          </div>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('contact') }}"style="margin-right: 10px;">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('features') }}"style="margin-right: 10px;">Features</a>
+                </li>
+                <li class="nav-item" >
+                  <a class="nav-link" href="{{ url_for('product') }}"style="margin-right: 10px;">About Product</span></a>
+                </li>
+                <li class="nav-item" >
+                  <a class="nav-link" href="{{ url_for('dashboard') }}"style="margin-right: 10px;">DashBoard <span class="sr-only">(current)</span></a>
+                </li>
+              </ul>
+              <a href="{{ url_for('Login') }}"class="quote_btn" style="margin-right: 10px; display: inline-block; padding: 10px 20px; background-color: #0074D9; color: #fff; text-decoration: none; border-radius: 5px; text-align: center; cursor: pointer;">Login</a>
+              <button onclick="startFreeTrial()">Free Trial</button>
+  
+              
+            </div>
           </div>
         </nav>
       </div>
@@ -309,7 +309,7 @@ function showNextStep() {
     <div class="step">
       <div class="step-number">3</div>
       <div class="step-description">Step Three</div>
-      <label for="searchInput">Enter your search:</label>
+      <label for="searchInput">Enter your prompt:</label>
       <input type="text" id="searchInput" placeholder="Search..." />
       <button type="button" onclick="performSearch()">Search</button>
     </div>
