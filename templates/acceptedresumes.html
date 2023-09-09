@@ -184,6 +184,7 @@
                                             <th>Rank</th>
                                             <th>Candidate Name</th>
                                             <th>Resume score</th>
+                                            <th>Sentences</th>
                                             <th>Details</th>
                                         </tr>
                                     </tfoot>
@@ -192,6 +193,10 @@
                                             <td>1</td>
                                             <td>Candidate Name</td>
                                             <td>Resume score</td>
+                                            <td>
+                                              <!-- Add "View Summary" button -->
+                                              <button class="btn btn-primary">View Sentences</button>
+                                          </td>  
                                             <td>
                                                 <!-- Add "View Summary" button -->
                                                 <button class="btn btn-primary">View Summary</button>
@@ -202,6 +207,10 @@
                                             <td>Candidate Name</td>
                                             <td>Resume score</td>
                                             <td>
+                                              <!-- Add "View Summary" button -->
+                                              <button class="btn btn-primary">View Sentences</button>
+                                          </td>  
+                                            <td>
                                                 <!-- Add "View Summary" button -->
                                                 <button class="btn btn-primary">View Summary</button>
                                             </td>                                          
@@ -210,6 +219,10 @@
                                             <td>3</td>
                                             <td>Candidate Name</td>
                                             <td>Resume score</td>
+                                            <td>
+                                              <!-- Add "View Summary" button -->
+                                              <button class="btn btn-primary">View Sentences</button>
+                                          </td>  
                                             <td>
                                                 <!-- Add "View Summary" button -->
                                                 <button class="btn btn-primary">View Summary</button>
@@ -262,24 +275,27 @@
     <script>
       // Add an event listener to each "View Summary" button
       document.getElementById("viewSummary1").addEventListener("click", function() {
-        sendPostRequest(1); // Call a function to send a POST request with candidate ID 1
+        sendPostRequest("view_summary", 1); // Call a function to send a POST request for summary with candidate ID 1
+        sendPostRequest("view_sentence", 1); // Call a function to send a POST request for sentences with candidate ID 1
       });
     
       document.getElementById("viewSummary2").addEventListener("click", function() {
-        sendPostRequest(2); // Call a function to send a POST request with candidate ID 2
+        sendPostRequest("view_summary", 2); // Call a function to send a POST request for summary with candidate ID 2
+        sendPostRequest("view_sentence", 2); // Call a function to send a POST request for sentences with candidate ID 2
       });
     
       document.getElementById("viewSummary3").addEventListener("click", function() {
-        sendPostRequest(3); // Call a function to send a POST request with candidate ID 3
+        sendPostRequest("view_summary", 3); // Call a function to send a POST request for summary with candidate ID 3
+        sendPostRequest("view_sentence", 3); // Call a function to send a POST request for sentences with candidate ID 3
       });
     
       // Function to send a POST request
-      function sendPostRequest(candidateId) {
+      function sendPostRequest(action, candidateId) {
         // Prepare the data you want to send
-        const data = { candidateId: candidateId };
+        const data = { action: action, candidateId: candidateId };
     
         // Send the data as a JSON string in a POST request
-        fetch('/api/view_summary', {
+        fetch('/api/view_data', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -290,6 +306,7 @@
         .then(data => {
           // Handle the response from the Python backend if needed
           console.log("Response from server:", data);
+          // You can update the UI or perform any other actions with the response data here
         })
         .catch(error => {
           // Handle errors, if any

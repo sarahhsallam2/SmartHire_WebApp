@@ -16,6 +16,9 @@ if torch.cuda.is_available():
     model = model.to(torch.device("cuda"))
 print(model.device)
 
+def test_function():
+    return "WORKINGG"
+
 def batch_encode_to_vectors(input_filename, output_filename):
     # Open the file containing text.
     with open(input_filename, 'r') as documents_file:

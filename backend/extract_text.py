@@ -2,15 +2,10 @@ import pdfplumber
 import re
 import spacy
 import nltk
+
 # Load the spaCy model for NER (Named Entity Recognition)
 nlp = spacy.load("en_core_web_sm")
 
-'''def extract_text_from_pdf(pdf_path):
-    with pdfplumber.open(pdf_path) as pdf:
-        text = ""
-        for page in pdf.pages:
-            text += page.extract_text()
-    return text'''
 
 # function to extract text from pdf and save them in a list of strings
 def extract_text_from_pdf(pdf_path):
@@ -50,62 +45,11 @@ def preprocess_text_modified(text_lines):
 # Load the spaCy model for NER (Named Entity Recognition)
 nlp = spacy.load("en_core_web_sm")
 
-# Download the "words" dataset from nltk
-nltk.download("names")
+# Download the "names" dataset from nltk
+#nltk.download("names")
 
 # Get a set of common English words from nltk
 common_words_set = set(nltk.corpus.names.words())
-
-'''def preprocess_text_and_extract_name(text_lines):
-    # Extract the first line of text
-    if text_lines:
-        first_line = text_lines[0]
-    else:
-        first_line = ""
-
-    # Remove non-alphanumeric characters and extra whitespaces
-    # except characters used in emails, GPAs, "high-fin", and website links
-    pattern = r'[^\w\s@.#+-]|(?<=\d)\s+(?=\d)|(?<=high-fin)\W|(?<=[\w\s])[-]'
-    
-    # Apply the regular expression pattern to the first line
-    first_line = re.sub(pattern, ' ', first_line)
-    
-    # Convert to lowercase
-    first_line = first_line.lower().strip()
-    
-    # Use spaCy to split the preprocessed first line into words
-    first_line_words = [token.text for token in nlp(first_line)]
-
-    # Check if the first line is a name by verifying it against common words
-    if not any(word.lower() in common_words_set for word in first_line_words):
-        candidate_name = first_line
-    else:
-        candidate_name = None
-
-    # Use spaCy to split the rest of the text into sentences
-    doc = nlp(' '.join(text_lines))
-    #preprocessed_text_lines = [sent.text for sent in doc.sents]
-    #doc = nlp(text_lines)
-    preprocessed_text_lines = [sent.text for sent in doc.sents]
-    # If spaCy's NER didn't find a name, try custom logic based on capitalization
-    if not candidate_name:
-        # Search for capitalized words in the original text
-        potential_names = re.findall(r'\b[A-Z][a-zA-Z]*\b', ' '.join(text_lines))
-        # Check if there are potential names and filter out common words
-        potential_names = [name for name in potential_names if name.lower() not in common_words_set]
-        if potential_names:
-            # Assuming the first name is the first capitalized word and the last name is the last capitalized word
-            first_name = potential_names[0]
-            last_name = potential_names[-1]
-            candidate_name = f"{first_name} {last_name}"
-    
-    return preprocessed_text_lines, candidate_name
-
-
-
-# Example usage:
-text_lines = ["Hadeel Yasser is an experienced software engineer.", "He has worked at XYZ Inc. for 5 years."]
-preprocessed_text, name = preprocess_text_and_extract_name(text_lines)'''
 
 def preprocess_text_and_extract_name(text_lines):
     # Join all text lines into a single string
@@ -120,8 +64,6 @@ def preprocess_text_and_extract_name(text_lines):
 
     # Convert to lowercase
     text = text.lower().strip()
-
-    
 
     # Extract the candidate's name from the first line
     first_line = text_lines[0] if text_lines else ""

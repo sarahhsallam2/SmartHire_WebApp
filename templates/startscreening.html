@@ -101,8 +101,10 @@
 
 
   <script>
-    // create core in solr using python API
-    
+ function showImportMessage() {
+            // Display a success message to the user
+            alert("File was imported successfully!");
+        }    
     // Get the current page pathname
     const currentPagePath = window.location.pathname;
   
@@ -168,11 +170,26 @@
       });
   }
   function performSearch() {
-    const searchQuery = document.getElementById('searchInput').value;
+    var userInput = document.getElementById("searchInput").value;
 
     // You can use the searchQuery value to perform your search actions
     // For example, you can send it to the backend for processing
-    alert('Performing search for: ' + searchQuery);
+    fetch('/searchprompt', {
+                method: 'POST',
+                body: JSON.stringify({ userInput: userInput }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from Python if needed
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+          
     // Function to show the next step
 function showNextStep() {
   // Check if the current step is filled
@@ -197,18 +214,6 @@ function showNextStep() {
 
 
 
-
-// @app.route('/import_cv', methods=['POST'])
-// def import_cv():
-//     # Implement your import logic here
-//     # This can include saving the uploaded file, processing it, etc.
-
-//     # For demonstration purposes, let's send a response back
-//     return jsonify({'message': 'CVs imported successfully'})
-
-// if __name__ == '__main__':
-//     app.run(debug=True)
-  
  
   </script>
   
@@ -294,9 +299,9 @@ function showNextStep() {
     <div class="dropdown">
         <select id="job-dropdown">
           <option value="" disabled selected>Job opening</option>
-          <option value="Data analyst">Data analyst</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          <option value="data_analyst">Data analyst</option>
+          <option value="tester">Tester</option>
+          <option value="software_engineer">Software Engineer</option>
         </select>
       </div>
       
@@ -309,8 +314,8 @@ function showNextStep() {
         <label for="file">Select a file:</label>
         <input type="file" name="file" id="file" style="display: none;" />
         <button type="button" onclick="document.getElementById('file').click()">Choose File</button>
-        <input type="submit" value="Import" />
-    </form>
+        <input type="submit" value="Import" onclick="showImportMessage()" />
+      </form>
     </div>
     <div class="step">
       <div class="step-number">3</div>

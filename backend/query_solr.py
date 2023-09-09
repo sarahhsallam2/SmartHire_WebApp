@@ -147,7 +147,8 @@ def get_cv_chunks(search_results):
     return cv_chunks
 
 if __name__== '__main__':
-    query_user_prompt('Select university candidates')
+    pass
+    #query_user_prompt('Select university candidates')
     
         
     

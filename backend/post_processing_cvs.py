@@ -6,7 +6,7 @@ from Post_solr import get_cvs_names_in_folder
 
 # function to get the top ranked cvs based on the calculated total score ...
 
-def get_top_ranked_cvs(prompt,percentage_of_cvs):
+def get_top_ranked_cvs(prompt,percentage_of_cvs,core_name):
     search_result=query_user_prompt(prompt)
     cv_scores=get_cv_scores(search_result)
     print("-----------CV Scores---------")
@@ -23,8 +23,8 @@ def get_top_ranked_cvs(prompt,percentage_of_cvs):
     print("-------CV Chunks------")
     print(cv_chunks)
     
-    
-    cv_name_and_id_dict , txt_file_path_dict= get_cvs_names_in_folder("E:\ITworx\CVs\Documents\software_engineer")
+    folder_path = "E:\ITworx\CVs\Documents\\" + core_name
+    cv_name_and_id_dict , txt_file_path_dict= get_cvs_names_in_folder(folder_path)
     keep_only_selected_keys(txt_file_path_dict,top_keys) # to pass the text file to the openAI function
     keep_only_selected_keys(cv_name_and_id_dict,top_keys) # to retrieve candidates names
     print("-------Candidates---------")
@@ -82,11 +82,14 @@ def fetch_documents_by_cv_numbers(cv_info_dict,core_name):
     else:
         print(f"Solr request failed with status code: {response.status_code}")
         return None
+# define a function that will take as input the cv chunks after selecting the candidates and gets the corresponding text in it
+# also the function should take the cv id which should be passed when the button view matching text is clicked
+
 
 if __name__== '__main__':
     
-    selected_items = get_top_ranked_cvs('Find candidates with good analytical skills',0.5)
+   ''' selected_items = get_top_ranked_cvs('Find candidates with good analytical skills',0.5)
 
     print("Selected items:")
     for item, value in selected_items.items():
-        print(f"{item}: {value}")
+        print(f"{item}: {value}")'''
