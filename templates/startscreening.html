@@ -170,7 +170,7 @@
       });
   }
   function performSearch() {
-    var userInput = document.getElementById("searchInput").value;
+    const searchQuery = document.getElementById('searchInput').value;
     const dropdown = document.getElementById("job-dropdown");
     const selectedValue = dropdown.value;
     //const percentageOfCvs= document.getElementById("percentage")
@@ -178,7 +178,7 @@
     // For example, you can send it to the backend for processing
     fetch('/searchprompt', {
                 method: 'POST',
-                body: JSON.stringify({ userInput: userInput ,
+                body: JSON.stringify({ searchQuery: searchQuery ,
                 selectedValue: selectedValue}),
                 headers: {
                     'Content-Type': 'application/json'
@@ -193,7 +193,7 @@
                 console.error('Error:', error);
             });
           }
-        //submitButton.addEventListener('click', performSearch); 
+          submitButton.addEventListener('click', performSearch);
 
     // Function to show the next step
 function showNextStep() {
@@ -326,9 +326,9 @@ function showNextStep() {
       <div class="step-number">3</div>
       <div class="step-description">Step Three</div>
       <label for="searchInput">Enter your prompt:</label>
-      <input type="text" id="searchInput" placeholder="Search..." />
-      <button type="button" onclick="performSearch()">Search</button>
-    </div>
+      <label for="searchInput">Enter your prompt:</label>
+  <input type="text" id="searchInput" placeholder="Search" />
+</div>
     <div class="step">
       <div class="step-number">4</div>
       <div class="step-description">Specify the desired percentage of matching cvs </div>
