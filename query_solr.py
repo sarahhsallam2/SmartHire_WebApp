@@ -38,7 +38,7 @@ def search_with_sentence_embedding(embedding_vector,core_name, total_chunks): # 
     response = requests.post(f"{solr_url}/select?fl=id,text,score&rows=1000", data=json.dumps(solr_query), headers=headers)
     
 
-    #logging.debug(f"Generated Solr Query: {solr_query}")
+   # #logging.debug(f"Generated Solr Query: {solr_query}")
     if response.status_code == 200:
         results = response.json()
         print(results)
