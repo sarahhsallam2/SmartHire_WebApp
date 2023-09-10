@@ -22,25 +22,23 @@
         console.log("Dropdown element not found");
       }
       });*/
-      console.log("Before DOMContentLoaded event listener");
+      //console.log("Before DOMContentLoaded event listener");
       document.addEventListener("DOMContentLoaded", () => {
-        const currentHostname = window.location.hostname;
-        const currentProtocol = window.location.protocol; // 'http:' or 'https:'
-        const currentPort = window.location.port || (currentProtocol === 'https:' ? '443' : '80');
+       // const currentHostname = window.location.hostname;
+      //  const currentProtocol = window.location.protocol; // 'http:' or 'https:'
+      //  const currentPort = window.location.port || (currentProtocol === 'https:' ? '443' : '80');
 
-        console.log(`Hostname: ${currentHostname}`);
-        console.log(`Port: ${currentPort}`);
+      //  console.log(`Hostname: ${currentHostname}`);
+       // console.log(`Port: ${currentPort}`);
 
         const dropdown = document.getElementById("job-dropdown");
 
         dropdown.addEventListener("change", () => {
-            const selectedValue = dropdown.value;
+        const selectedValue = dropdown.value;
         
-            // Log the selected value for debugging
-            console.log("Selected value:", selectedValue);
         
             // Send the selectedValue to your Python backend using an HTTP request
-            fetch('/api/create_core', {
+            fetch('/return_core_name', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

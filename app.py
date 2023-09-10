@@ -1,24 +1,29 @@
 from flask import Flask, request, jsonify, render_template
-from backend import create_core, embeddings, index_documents , extract_text , summarize_cvs
+from backend import create_core, embeddings, index_documents , extract_text , summarize_cvs, post_processing_cvs
 from Post_solr import get_documents_in_folder
 from flask_cors import CORS
 
+core_name =""
 app = Flask(__name__)
 CORS(app)
-# route to call the create_core function
-@app.route('/api/create_core', methods=['POST'])
-def create_core_view():
-    data = request.json
-    selected_value = data.get('selectedValue')
 
+@app.route('/return_core_name', methods=['POST'])
+def return_core_name():
+    data = request.json
+    core_name = data.get('selectedValue')  
+    create_core_view(core_name)
+    return "Added  Core"
+
+
+def create_core_view(selected_value):
+    
     # Call your Python function with the selected_value
     result = create_core.create_cores(selected_value)
     folder_path = "E:\ITworx\CVs\Documents"+ "\\"+ result
-    
-    print(embeddings.test_function())
-    print(get_documents_in_folder(folder_path))
-    # Return a response (if needed)
-    return jsonify({'result': result})
+    get_documents_in_folder(folder_path)
+    print("Successfully index documents")
+
+
 # step 0: check if we will add the function that will download the files to the corresponding dircetory based on core name or not.
 # step 1: After importing documents call function get_documents_int_folder which will index documents to solr
 # step 2: call function get top_ranked_cvs which will take the prompt entered in the search field + perecentage of cvs
@@ -69,6 +74,7 @@ def startscreening():
 @app.route('/register')
 def Register():
     return render_template('Register.html')
+
 candidate_data = {
     1: {
         "name": "Candidate 1",
@@ -88,20 +94,27 @@ candidate_data = {
 }
 @app.route('/searchprompt', methods=['POST'])
 def receive_input():
+    
     data = request.get_json()
     user_input = data.get('userInput')
+    core_name= data.get('selectedValue')
+    #percentage_of_cvs = data.get('percentage')
+    print(core_name)
+    print("Hii")
+    cv_name_id_dict, txt_file_path_dict = post_processing_cvs.get_top_ranked_cvs(user_input, 0.5 ,core_name)
+    print(cv_name_id_dict)
     # Process user_input as needed
     # You can return a response back to the frontend if necessary
     response_data = {'message': 'Received user input', 'input': user_input}
     return jsonify(response_data)
 
-# Function to handle view_summary action
+# Function to handle view_summary action --> we can pass the dictionary for selected candidates and txt files dict to get to content
 def view_summary(candidate_id):
     # Replace this with your actual code to handle view_summary
     summary = candidate_data[candidate_id]["summary"]
     return summary
 
-def view_sentence(candidate_id):
+def view_sentence(candidate_id): # can pass dict for cv names and cv_chunks to get the matching sentences
     # Replace this with your actual code to handle view_sentence
     sentences = candidate_data[candidate_id]["sentences"]
     return sentences

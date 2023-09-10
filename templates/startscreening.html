@@ -171,12 +171,15 @@
   }
   function performSearch() {
     var userInput = document.getElementById("searchInput").value;
-
+    const dropdown = document.getElementById("job-dropdown");
+    const selectedValue = dropdown.value;
+    //const percentageOfCvs= document.getElementById("percentage")
     // You can use the searchQuery value to perform your search actions
     // For example, you can send it to the backend for processing
     fetch('/searchprompt', {
                 method: 'POST',
-                body: JSON.stringify({ userInput: userInput }),
+                body: JSON.stringify({ userInput: userInput ,
+                selectedValue: selectedValue}),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -189,7 +192,9 @@
             .catch(error => {
                 console.error('Error:', error);
             });
-          
+          }
+        //submitButton.addEventListener('click', performSearch); 
+
     // Function to show the next step
 function showNextStep() {
   // Check if the current step is filled
@@ -210,7 +215,7 @@ function showNextStep() {
   }
 }
 
-  }
+  
 
 
 
@@ -328,7 +333,7 @@ function showNextStep() {
       <div class="step-number">4</div>
       <div class="step-description">Specify the desired percentage of matching cvs </div>
       <div>
-        <input type="text" placeholder="text" required />
+        <input type="text" id="percentage" placeholder="Enter percentage" required />
       </div>
     </div>
     <br>

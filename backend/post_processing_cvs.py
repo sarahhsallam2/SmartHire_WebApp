@@ -38,7 +38,7 @@ def get_top_ranked_cvs(prompt,percentage_of_cvs,core_name):
             for doc in docs:
                 print(f"  ID: {doc['id']}, Text: {doc.get('text', 'N/A')}")'''
     
-    return dict(top_items)
+    return cv_name_and_id_dict, txt_file_path_dict
 
 
 def keep_only_selected_keys(dictionary, keys_to_keep):

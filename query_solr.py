@@ -2,12 +2,12 @@ import requests
 import json
 import pysolr
 from Post_solr import get_total_document_count
-from embeddings import get_sentence_embedding
+from backend.embeddings import get_sentence_embedding
 import re
 from collections import Counter
 import logging
 
-def calculate_k(total_chunks, desired_coverage=0.2):
+def calculate_k(total_chunks, desired_coverage=0.5):
     """
     Calculate the value of k dynamically based on the total number of chunks in the Solr database.
     
@@ -32,11 +32,12 @@ def search_with_sentence_embedding(embedding_vector,core_name, total_chunks): # 
     k = calculate_k(total_chunks)
     print("K chunks =" + str(k))
     solr_query = {
-        "query": f"{{!knn f=vector topK={k}}}[{', '.join(map(str, embedding_vector))}]"
+        "query": f"{{!knn f=vector topK={k}}}[{', '.join(map(str, embedding_vector))}]", 
     }
-
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(f"{solr_url}/select?fl=id,text,score", data=json.dumps(solr_query), headers=headers)
+    response = requests.post(f"{solr_url}/select?fl=id,text,score&rows=1000", data=json.dumps(solr_query), headers=headers)
+    
+
     #logging.debug(f"Generated Solr Query: {solr_query}")
     if response.status_code == 200:
         results = response.json()
