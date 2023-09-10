@@ -177,60 +177,20 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                       
-                                        <tr>
-                                            <th>Rank</th>
-                                            <th>Candidate Name</th>
-                                            <th>Resume score</th>
-                                            <th>Sentences</th>
-                                            <th>Details</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Candidate Name</td>
-                                            <td>Resume score</td>
-                                            <td>
-                                              <!-- Add "View Summary" button -->
-                                              <button class="btn btn-primary">View Sentences</button>
-                                          </td>  
-                                            <td>
-                                                <!-- Add "View Summary" button -->
-                                                <button class="btn btn-primary">View Summary</button>
-                                            </td>                                         
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Candidate Name</td>
-                                            <td>Resume score</td>
-                                            <td>
-                                              <!-- Add "View Summary" button -->
-                                              <button class="btn btn-primary">View Sentences</button>
-                                          </td>  
-                                            <td>
-                                                <!-- Add "View Summary" button -->
-                                                <button class="btn btn-primary">View Summary</button>
-                                            </td>                                          
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Candidate Name</td>
-                                            <td>Resume score</td>
-                                            <td>
-                                              <!-- Add "View Summary" button -->
-                                              <button class="btn btn-primary">View Sentences</button>
-                                          </td>  
-                                            <td>
-                                                <!-- Add "View Summary" button -->
-                                                <button class="btn btn-primary">View Summary</button>
-                                            </td>                                       
-                                        </tr>
-
-                                    </tbody>
-                                </table>
+                              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Candidate Name</th>
+                                        <th>Resume score</th>
+                                        <th>Sentences</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="candidatesTableBody">
+                                    <!-- Table rows will be dynamically generated here -->
+                                </tbody>
+                            </table>
                             </div>
                         </div>
                     </div>
@@ -273,46 +233,60 @@
         </div>
     </div>
     <script>
-      // Add an event listener to each "View Summary" button
-      document.getElementById("viewSummary1").addEventListener("click", function() {
-        sendPostRequest("view_summary", 1); // Call a function to send a POST request for summary with candidate ID 1
-        sendPostRequest("view_sentence", 1); // Call a function to send a POST request for sentences with candidate ID 1
-      });
-    
-      document.getElementById("viewSummary2").addEventListener("click", function() {
-        sendPostRequest("view_summary", 2); // Call a function to send a POST request for summary with candidate ID 2
-        sendPostRequest("view_sentence", 2); // Call a function to send a POST request for sentences with candidate ID 2
-      });
-    
-      document.getElementById("viewSummary3").addEventListener("click", function() {
-        sendPostRequest("view_summary", 3); // Call a function to send a POST request for summary with candidate ID 3
-        sendPostRequest("view_sentence", 3); // Call a function to send a POST request for sentences with candidate ID 3
-      });
-    
-      // Function to send a POST request
-      function sendPostRequest(action, candidateId) {
-        // Prepare the data you want to send
-        const data = { action: action, candidateId: candidateId };
-    
-        // Send the data as a JSON string in a POST request
-        fetch('/api/view_data', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        })
-        .then(response => response.json())
-        .then(data => {
-          // Handle the response from the Python backend if needed
-          console.log("Response from server:", data);
-          // You can update the UI or perform any other actions with the response data here
-        })
-        .catch(error => {
-          // Handle errors, if any
-          console.error("Error:", error);
+    document.addEventListener("DOMContentLoaded", function () {
+    // Retrieve the data passed from the Python route (cvNameIdDict)
+    var cvNameIdDict = JSON.parse('{{ cv_name_id_dict | tojson | safe }}');
+
+    // Get the table body element
+    var candidatesTableBody = document.getElementById("candidatesTableBody");
+
+    // Loop through the candidate data and populate the table
+    Object.keys(cvNameIdDict).forEach(function (candidateId) {
+        var candidate = cvNameIdDict[candidateId];
+        var row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${candidateId}</td>
+            <td>${candidate.name}</td>
+            <td>${candidate.resume_score}</td>
+            <td>
+                <button class="btn btn-primary view-sentences" data-candidate-id="${candidateId}">View Sentences</button>
+            </td>
+            <td>
+                <button class="btn btn-primary view-summary" data-candidate-id="${candidateId}">View Summary</button>
+            </td>
+        `;
+        candidatesTableBody.appendChild(row);
+    });
+
+    // Add event listeners to dynamically created buttons
+    var viewSentencesButtons = document.querySelectorAll(".view-sentences");
+    var viewSummaryButtons = document.querySelectorAll(".view-summary");
+
+    viewSentencesButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            var candidateId = button.getAttribute("data-candidate-id");
+            viewSentences(candidateId);
         });
-      }
+    });
+
+    viewSummaryButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            var candidateId = button.getAttribute("data-candidate-id");
+            viewSummary(candidateId);
+        });
+    });
+});
+function viewSentences(candidateId) {
+    // Implement your logic to handle the "View Sentences" action here
+    console.log("View Sentences for Candidate ID:", candidateId);
+}
+
+// Function to handle the "View Summary" button click
+function viewSummary(candidateId) {
+    // Implement your logic to handle the "View Summary" action here
+    console.log("View Summary for Candidate ID:", candidateId);
+}
+
     </script>
     
     <!-- Bootstrap core JavaScript-->

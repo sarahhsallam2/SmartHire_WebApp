@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template, jsonify, request
 from backend import create_core, embeddings, index_documents , extract_text , summarize_cvs, post_processing_cvs
 from Post_solr import get_documents_in_folder
 from flask_cors import CORS
@@ -38,9 +38,9 @@ def index():
 @app.route('/about')
 def about():
     return render_template('about.html')
-@app.route('/acceptedresumes')
-def acceptedresumes():
-    return render_template('acceptedresumes.html')
+# @app.route('/acceptedresumes')
+# def acceptedresumes():
+#     return render_template('acceptedresumes.html')
 @app.route('/candidates')
 def candidates():
     return render_template('candidates.html')
@@ -103,10 +103,17 @@ def receive_input():
     print("Hii")
     cv_name_id_dict, txt_file_path_dict = post_processing_cvs.get_top_ranked_cvs(user_input, 0.5 ,core_name)
     print(cv_name_id_dict)
-    # Process user_input as needed
-    # You can return a response back to the frontend if necessary
-    response_data = {'message': 'Received user input', 'input': user_input}
-    return jsonify(response_data)
+    return render_template('acceptedresumes.html', cv_name_id_dict=cv_name_id_dict, txt_file_path_dict=txt_file_path_dict)
+
+
+@app.route('/acceptedresumes')
+def accepted_resumes():
+    # Retrieve data from query parameters
+    cv_name_id_dict = request.args.get('cv_name_id_dict')
+    txt_file_path_dict = request.args.get('txt_file_path_dict')
+
+    # Render the HTML template and pass the data to it
+    return render_template('acceptedresumes.html', cv_name_id_dict=cv_name_id_dict, txt_file_path_dict=txt_file_path_dict)
 
 # Function to handle view_summary action --> we can pass the dictionary for selected candidates and txt files dict to get to content
 def view_summary(candidate_id):
